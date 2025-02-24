@@ -23,6 +23,18 @@ app.use(bodyParser.json());
 const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://admin:admin@cluster0.n2bkl.mongodb.net/TriviaStatDB');
 
+//Stored data
+const profileSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+    correctQuestions: String,
+    bestCategory: String,
+    profileCreation: String
+})
+
+//Initialize model based schema
+const profileModel = new mongoose.model('playerstats', profileSchema);
+
 //Only run on 4000 port when running
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
