@@ -14,8 +14,8 @@ const Navigation = () =>
                 <Nav className="me-auto">
                     {/*Different links*/}
                     <Nav.Link href="/home">Home</Nav.Link>
-                    <Nav.Link href="/additem">Add Item</Nav.Link>
-                    <Nav.Link href="/main">Main Page</Nav.Link>
+                    <Nav.Link href="/additem">Player Statstics</Nav.Link>
+                    <Nav.Link href="/main">Add Quiz Deck</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
