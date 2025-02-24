@@ -3,6 +3,7 @@ import './App.css';
 import Navigation from './components/Navigation';
 import HomePage from './components/HomePage';
 import CustomQuiz from './components/CustomQuiz';
+import PlayerStats from './components/PlayerStats';
 
 function App() {
   return (
