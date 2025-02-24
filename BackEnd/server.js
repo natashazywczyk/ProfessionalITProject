@@ -35,6 +35,13 @@ const profileSchema = new mongoose.Schema({
 //Initialize model based schema
 const profileModel = new mongoose.model('playerstats', profileSchema);
 
+//Find all profiles in database
+app.get('/api/profiles', async (req, res) => {
+    const profiles = await profileModel.find({});
+
+    res.status(200).json({profiles})
+});
+
 //Only run on 4000 port when running
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
