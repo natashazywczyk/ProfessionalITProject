@@ -14,6 +14,15 @@ app.use(function(req, res, next) {
     next();
 });
 
+//Add Body-parser Middleware
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+//Database Server Connection String
+const mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://admin:admin@cluster0.n2bkl.mongodb.net/TriviaStatDB');
+
 //Only run on 4000 port when running
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
