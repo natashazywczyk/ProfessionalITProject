@@ -9,10 +9,10 @@ const Navigation = () =>
         //Updates URL depending on what link the user clicks
         <Navbar bg="dark" data-bs-theme="dark">
             <Container>
-                <Navbar.Brand href="/">Navbar</Navbar.Brand>
+                <Navbar.Brand href="/">Trivia Quiz</Navbar.Brand>
                 <Nav className="me-auto">
                     {/*Different links*/}
-                    <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/generalknowledge">Quizzes</Nav.Link>
                     <Nav.Link href="/playerstats">Player Statstics</Nav.Link>
                     <Nav.Link href="/customquiz">Add Quiz Deck</Nav.Link>
                 </Nav>
