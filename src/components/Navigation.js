@@ -5,8 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 
 const Navigation = () => 
 {
-    return 
-    (
+    return (
         //Updates URL depending on what link the user clicks
         <Navbar bg="dark" data-bs-theme="dark">
             <Container>
