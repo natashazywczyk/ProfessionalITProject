@@ -12,9 +12,9 @@ const Navigation = () =>
                 <Navbar.Brand href="/">Navbar</Navbar.Brand>
                 <Nav className="me-auto">
                     {/*Different links*/}
-                    <Nav.Link href="/home">Home</Nav.Link>
-                    <Nav.Link href="/additem">Player Statstics</Nav.Link>
-                    <Nav.Link href="/main">Add Quiz Deck</Nav.Link>
+                    <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/playerstats">Player Statstics</Nav.Link>
+                    <Nav.Link href="/customquiz">Add Quiz Deck</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>

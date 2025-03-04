@@ -1,5 +1,6 @@
 //Imports for desired navigation pages
 import './App.css';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navigation from './components/Navigation';
 import HomePage from './components/HomePage';
 import CustomQuiz from './components/CustomQuiz';
@@ -15,8 +16,8 @@ function App() {
           <Route path = "/" element = {<HomePage />} />
           <Route path = "/playerstats" element = {<PlayerStats />} />
           <Route path = "/customquiz" element = {<CustomQuiz />} />
-        </Routes>
-      </Router>
+          </Routes>
+      </Router> 
     </div>
   );
 }
