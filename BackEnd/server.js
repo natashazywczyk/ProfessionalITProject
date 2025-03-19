@@ -32,7 +32,7 @@ const profileSchema = new mongoose.Schema({
 })
 
 //Initialize model based schema
-const profileModel = new mongoose.model('profiles', profileSchema);
+const profileModel = new mongoose.model('myprofiles', profileSchema);
 
 //Find all profiles in database
 app.get('/api/profiles', async (req, res) => {
@@ -41,7 +41,7 @@ app.get('/api/profiles', async (req, res) => {
     res.status(200).json({profiles})
 });
 
-//Push wish data to database
+//Push profile data to database
 app.post('/api/profiles', async (req, res)=>{
 
     const { username, password, profilePicture, score } = req.body;
