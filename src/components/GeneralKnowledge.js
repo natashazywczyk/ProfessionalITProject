@@ -39,14 +39,24 @@ const GeneralKnowledge = () => {
     <div>
       <h1>Welcome to the Trivia App!</h1>
       <div>
-        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-          {apiData.map((question, number) => (
-            <li key={number}>
-              <h3>Question {number + 1}:</h3>
-              <p>{question.question.text}<br /><br /></p>
-            </li>
-          ))}
-        </ul>
+        {/*Display 10 questions with its correlating possible answers*/}
+        {apiData.map((question, index) => ( // Keep track of the question and its index
+          <div key={question.id}>
+            <h3>Question {index + 1}:</h3> <h5>{question.question.text}</h5>  {/*Display question number and the question from api*/}
+            <div>
+              <p>Choose One: </p>
+              <ul style={{listStyleType: 'none', padding: '0', textAlign: 'center'}}>
+                {/*Display possible answers below question */}
+                {[
+                  question.correctAnswer, 
+                  ...question.incorrectAnswers
+                ].map((answer, answerIndex) => (
+                  <li key={answerIndex}>{answer}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
