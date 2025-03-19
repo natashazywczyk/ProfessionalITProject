@@ -27,13 +27,12 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0.n2bkl.mongodb.net/TriviaSta
 const profileSchema = new mongoose.Schema({
     username: String,
     password: String,
-    correctQuestions: String,
-    bestCategory: String,
-    profileCreation: String
+    profilePicture: String,
+    score: String
 })
 
 //Initialize model based schema
-const profileModel = new mongoose.model('playerstats', profileSchema);
+const profileModel = new mongoose.model('profiles', profileSchema);
 
 //Find all profiles in database
 app.get('/api/profiles', async (req, res) => {
@@ -41,6 +40,17 @@ app.get('/api/profiles', async (req, res) => {
 
     res.status(200).json({profiles})
 });
+
+//Push wish data to database
+app.post('/api/profiles', async (req, res)=>{
+
+    const { username, password, profilePicture, score } = req.body;
+   
+    const newProfile = new profileModel({ username, password, profilePicture, score });
+    await newProfile.save(); //wait until last process is finished
+   
+    res.status(201).json({ message: 'Profile created successfully', profile: newProfile });
+})
 
 //Only run on 4000 port when running
 app.listen(port, () => {
