@@ -7,6 +7,7 @@ import CustomQuiz from './components/CustomQuiz';
 import PlayerStats from './components/PlayerStats';
 import GeneralKnowledge from './components/GeneralKnowledge';
 import CreateProfile from './components/CreateProfile';
+import Settings from './components/Settings';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path = "/playerstats" element = {<PlayerStats />} />
           <Route path = "/customquiz" element = {<CustomQuiz />} />
           <Route path = "/createprofile" element = {<CreateProfile />} />
+          <Route path = "/settings" element = {<Settings />} />
           </Routes>
       </Router> 
     </div>
