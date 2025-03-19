@@ -17,6 +17,9 @@ const Navigation = () =>
                     <Nav.Link href="/customquiz">Add Quiz Deck</Nav.Link>
                     <Nav.Link href="/createprofile">Create Profile</Nav.Link>
                 </Nav>
+                <Nav className="ms-auto">
+                    <Nav.Link href="/settings">Settings</Nav.Link>
+                </Nav>
             </Container>
         </Navbar>
     );
