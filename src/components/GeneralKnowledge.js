@@ -7,7 +7,7 @@ const GeneralKnowledge = () => {
   const [error, setError] = useState(null); // Handle errors
 
   useEffect(() => {
-    const fetchData = () => {
+    const fetchTriviaData= () => {
         //Fetch randomised questions from the trivia API
         axios.get("https://the-trivia-api.com/v2/questions/")
 
@@ -24,7 +24,7 @@ const GeneralKnowledge = () => {
         });
     };
 
-    fetchData();
+    fetchTriviaData();
   }, []);
 
   if (loading) {
@@ -38,6 +38,16 @@ const GeneralKnowledge = () => {
   return (
     <div>
       <h1>Welcome to the Trivia App!</h1>
+      <div>
+        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+          {apiData.map((question, number) => (
+            <li key={number}>
+              <h3>Question {number + 1}:</h3>
+              <p>{question.question.text}<br /><br /></p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
