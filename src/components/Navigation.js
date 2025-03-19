@@ -15,6 +15,7 @@ const Navigation = () =>
                     <Nav.Link href="/generalknowledge">Quizzes</Nav.Link>
                     <Nav.Link href="/playerstats">Player Statstics</Nav.Link>
                     <Nav.Link href="/customquiz">Add Quiz Deck</Nav.Link>
+                    <Nav.Link href="/createprofile">Create Profile</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
