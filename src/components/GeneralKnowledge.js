@@ -23,24 +23,22 @@ const GeneralKnowledge = () => {
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   };
 
-  useEffect(() => {
-    const fetchTriviaData = () => {
-      // Fetch randomised questions from the trivia API
-      axios
-        .get("https://the-trivia-api.com/v2/questions/")
-        .then((response) => {
-          console.log(response.data); // Log response data to check structure
-          setApiData(response.data); // Store data to useState
-          setLoading(false); // Set loading to false as data is loaded
-        })
-        .catch((error) => {
-          setError("There was an error with the request.");
-          setLoading(false);
-          console.error(error); // Display error to console
-        });
-    };
-
-    fetchTriviaData();
+  const fetchTriviaData = () => {
+    // Fetch randomised questions from the trivia API
+    axios.get("https://the-trivia-api.com/v2/questions/")
+      .then((response) => {
+        console.log(response.data); // Log response data to check structure
+        setApiData(response.data); // Store data to useState
+        setLoading(false); // Set loading to false as data is loaded
+      })
+      .catch((error) => {
+        setError("There was an error with the request.");
+        setLoading(false);
+        console.error(error); // Display error to console
+    });
+  };
+    useEffect(() => {
+      fetchTriviaData();
   }, []);
 
   // While loading or if there's an error
@@ -63,6 +61,24 @@ const GeneralKnowledge = () => {
         ) : (
           <p>You answered less than half correct. Better luck next time!</p>
         )}
+        {/* Button to restart quiz */}
+        <button
+        style={{
+          marginTop: "20px",
+          padding: "10px 20px",
+          backgroundColor: "Purple",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          setCurrentQuestionIndex(0); // Reset question index
+          setRightCorrectAnswers(0); // Reset correct answers count
+          fetchTriviaData();
+        }}> 
+          Restart Quiz
+        </button>
       </div>
     );
   }
