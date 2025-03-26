@@ -79,6 +79,10 @@ const GeneralKnowledge = () => {
                     listStyleType: "none",
                     padding: "0",
                     textAlign: "center",
+                    display: "grid", // Use grid layout
+                    gridTemplateColumns: "repeat(2, auto)", // Use auto width for columns
+                    gap: "5px",
+                    justifyContent: "center", // Center the grid horizontally
                   }}
                 >
                   {/* Display possible answers below question */}
@@ -86,8 +90,8 @@ const GeneralKnowledge = () => {
                     <li key={answerIndex}>
                       <button
                         style={{
-                          padding: "10px 20px",
-                          margin: "5px",
+                          padding: "20px 40px",
+                          margin: "0",
                           backgroundColor: "Purple",
                           color: "white",
                           border: "none",
