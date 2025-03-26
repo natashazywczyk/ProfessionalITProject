@@ -7,6 +7,7 @@ const GeneralKnowledge = () => {
   const [error, setError] = useState(null); // Handle errors
   const [rightCorrectAnswers, setRightCorrectAnswers] = useState(0); // Keeps track of the user's correct answer guesses
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question index
+  const [correctAnswersTotal, setCorrectAnswersTotal ] = useState(0); // Keeps track of user's overall correct answer guesses
 
   // Function to randomize the position of possible answers
   const randomise = (answers) => {
@@ -56,7 +57,7 @@ const GeneralKnowledge = () => {
       <div>
         <h1>Quiz Complete!</h1>
         <p>You answered {rightCorrectAnswers} out of {apiData.length} questions correctly.</p>
-        {rightCorrectAnswers > 5 ? (
+        {rightCorrectAnswers >= 5 ? (
           <p>Well done! You answered over half correct. Keep it up!</p>
         ) : (
           <p>You answered less than half correct. Better luck next time!</p>
@@ -73,6 +74,7 @@ const GeneralKnowledge = () => {
           cursor: "pointer",
         }}
         onClick={() => {
+          setCorrectAnswersTotal((prevTotal) => prevTotal + rightCorrectAnswers); // Add current correct answers to overall correct answer total
           setCurrentQuestionIndex(0); // Reset question index
           setRightCorrectAnswers(0); // Reset correct answers count
           fetchTriviaData();
@@ -95,6 +97,10 @@ const GeneralKnowledge = () => {
       {/* Display the correct answers counter in the top left, but under the navigation bar */}
       <div style={{ position: "absolute", top: "50px", left: "10px" }}>
         Correct Answers: {rightCorrectAnswers}
+      </div>
+
+      <div style= {{position: "absolute", top: "50px", right: "10px"}}>
+        Total Correct Answers: {correctAnswersTotal}
       </div>
 
       <h1>Welcome to the Trivia App!</h1>
