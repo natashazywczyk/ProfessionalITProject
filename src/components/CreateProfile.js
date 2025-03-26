@@ -10,7 +10,7 @@ const CreateProfile = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const profile = {username, password, profilePicture};
+        const profile = { username, password, profilePicture, score: 0 };
         console.log(profile);
 
         axios.post('http://localhost:4000/api/profiles', profile)
