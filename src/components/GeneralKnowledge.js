@@ -110,7 +110,7 @@ const GeneralKnowledge = () => {
           <h3>Question {currentQuestionIndex + 1}:</h3> {/* Display question number */}
           <h5>{currentQuestion.question.text}</h5> {/* Display question text */}
           <div>
-            <p>Choose One: </p>
+            <p style={{marginTop: "150px"}}>Choose One: </p>
             <ul
               style={{
                 listStyleType: "none",
@@ -120,6 +120,7 @@ const GeneralKnowledge = () => {
                 gridTemplateColumns: "repeat(2, auto)", // Use auto width for columns
                 gap: "5px",
                 justifyContent: "center", // Center the grid horizontally
+                marginTop: "20px"
               }}
             >
               {/* Display possible answers */}
