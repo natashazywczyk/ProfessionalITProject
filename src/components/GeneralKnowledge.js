@@ -57,7 +57,12 @@ const GeneralKnowledge = () => {
     return (
       <div>
         <h1>Quiz Complete!</h1>
-        <p>You answered {rightCorrectAnswers} out of {apiData.length} questions correctly</p>
+        <p>You answered {rightCorrectAnswers} out of {apiData.length} questions correctly.</p>
+        {rightCorrectAnswers > 5 ? (
+          <p>Well done! You answered over half correct. Keep it up!</p>
+        ) : (
+          <p>You answered less than half correct. Better luck next time!</p>
+        )}
       </div>
     );
   }
