@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-
 const GeneralKnowledge = () => {
   const [apiData, setApiData] = useState([]); // Store data from API
   const [loading, setLoading] = useState(true); // Display while fetch is happening
@@ -9,16 +8,15 @@ const GeneralKnowledge = () => {
   let randomisedAnswers = [];
 
   // Function to ranodmise position of possible answers, ensuring correct answer isn't always first
-  const randomise = (array) => 
+  const randomise = (answers) => 
   {
-    return array.sort(() => Math.random() - 0.5);
+    return answers.sort(() => Math.random() - 0.5);
   };
 
   useEffect(() => {
     const fetchTriviaData = () => {
       // Fetch randomised questions from the trivia API
-      axios
-        .get("https://the-trivia-api.com/v2/questions/")
+      axios.get("https://the-trivia-api.com/v2/questions/")
         .then((response) => {
           console.log(response.data); // Log response data to check structure
           setApiData(response.data); // Store data to useState
@@ -72,7 +70,20 @@ const GeneralKnowledge = () => {
                 >
                   {/*Display possible answers below question*/}
                   {randomisedAnswers.map((answer, answerIndex) => (
-                    <li key={answerIndex}>{answer}</li>
+                     <li key={answerIndex}>
+                     <button
+                       style={{
+                         padding: "10px 20px",
+                         margin: "5px",
+                         backgroundColor: "Purple",
+                         color: "white",
+                         border: "none",
+                         borderRadius: "5px",
+                         cursor: "pointer",
+                       }}>
+                        {answer}
+                       </button>
+                       </li>
                   ))}
                 </ul>
               </div>
