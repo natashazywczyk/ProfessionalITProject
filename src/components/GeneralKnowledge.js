@@ -90,6 +90,7 @@ const GeneralKnowledge = () => {
                     <li key={answerIndex}>
                       <button
                         style={{
+                          width: "350px",
                           padding: "20px 40px",
                           margin: "0",
                           backgroundColor: "Purple",
