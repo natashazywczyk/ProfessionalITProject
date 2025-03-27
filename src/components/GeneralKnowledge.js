@@ -51,6 +51,17 @@ const GeneralKnowledge = () => {
     localStorage.setItem("correctAnswersTotal", correctAnswersTotal);
   }, [correctAnswersTotal]);
 
+  useEffect(() => {
+    if (currentQuestionIndex >= apiData.length && apiData.length > 0) {
+      // Update the total score when the quiz is completed
+      setCorrectAnswersTotal((prevTotal) => {
+        const newTotal = prevTotal + rightCorrectAnswers;
+        localStorage.setItem("correctAnswersTotal", newTotal); // Save to local storage
+        return newTotal;
+      });
+    }
+  }, [currentQuestionIndex, apiData.length, rightCorrectAnswers]);
+
   // While loading or if there's an error
   if (loading) {
     return <div>Loading, please wait...</div>;
@@ -62,15 +73,6 @@ const GeneralKnowledge = () => {
 
   // If all questions have been answered
   if (currentQuestionIndex >= apiData.length) {
-    // Update the total score when the quiz is completed
-    useEffect(() => {
-      setCorrectAnswersTotal((prevTotal) => {
-        const newTotal = prevTotal + rightCorrectAnswers;
-        localStorage.setItem("correctAnswersTotal", newTotal); // Save to local storage
-        return newTotal;
-      });
-    }, []);
-
     return (
       <div>
         <h1>Quiz Complete!</h1>
