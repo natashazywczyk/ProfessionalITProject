@@ -61,6 +61,15 @@ const GeneralKnowledge = () => {
 
   // If all questions have been answered
   if (currentQuestionIndex >= apiData.length) {
+    // Update the total score when the quiz is completed
+    useEffect(() => {
+      setCorrectAnswersTotal((prevTotal) => {
+        const newTotal = prevTotal + rightCorrectAnswers;
+        localStorage.setItem("correctAnswersTotal", newTotal); // Save to local storage
+        return newTotal;
+      });
+    }, []); // Empty dependency array ensures this runs only once when the end screen is displayed
+
     return (
       <div>
         <h1>Quiz Complete!</h1>
@@ -82,7 +91,6 @@ const GeneralKnowledge = () => {
           cursor: "pointer",
         }}
         onClick={() => {
-          setCorrectAnswersTotal((prevTotal) => prevTotal + rightCorrectAnswers); // Add current correct answers to overall correct answer total
           setCurrentQuestionIndex(0); // Reset question index
           setRightCorrectAnswers(0); // Reset correct answers count
           fetchTriviaData();
