@@ -7,8 +7,11 @@ const GeneralKnowledge = () => {
   const [error, setError] = useState(null); // Handle errors
   const [rightCorrectAnswers, setRightCorrectAnswers] = useState(0); // Keeps track of the user's correct answer guesses
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question index
-  const [correctAnswersTotal, setCorrectAnswersTotal ] = useState(0); // Keeps track of user's overall correct answer guesses
-
+  const [correctAnswersTotal, setCorrectAnswersTotal ] = useState(() => { // Keeps track of user's overall correct answer guesses
+    // Retrieve the total correct answers from local storage or default to 0
+    const storedTotal = localStorage.getItem("correctAnswersTotal");
+    return storedTotal ? parseInt(storedTotal, 10) : 0;
+  });
   // Function to randomize the position of possible answers
   const randomise = (answers) => {
     return answers.sort(() => Math.random() - 0.5);
@@ -41,6 +44,11 @@ const GeneralKnowledge = () => {
     useEffect(() => {
       fetchTriviaData();
   }, []);
+
+  // Update local storage whenever correctAnswersTotal changes
+  useEffect(() => {
+    localStorage.setItem("correctAnswersTotal", correctAnswersTotal);
+  }, [correctAnswersTotal]);
 
   // While loading or if there's an error
   if (loading) {
