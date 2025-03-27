@@ -7,7 +7,11 @@ const GeneralKnowledge = () => {
   const [error, setError] = useState(null); // Handle errors
   const [rightCorrectAnswers, setRightCorrectAnswers] = useState(0); // Keeps track of the user's correct answer guesses
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question index
-  const [correctAnswersTotal, setCorrectAnswersTotal ] = useState(0); // Keeps track of user's overall correct answer guesses
+  const [correctAnswersTotal, setCorrectAnswersTotal ] = useState(() => { // Keeps track of user's overall correct answer guesses
+    // Retrieve the total correct answers from local storage or default to 0
+    const storedTotal = localStorage.getItem("correctAnswersTotal");
+    return storedTotal ? parseInt(storedTotal, 10) : 0;
+  });
 
   // Function to randomize the position of possible answers
   const randomise = (answers) => {
@@ -42,6 +46,22 @@ const GeneralKnowledge = () => {
       fetchTriviaData();
   }, []);
 
+  // Update local storage whenever correctAnswersTotal changes
+  useEffect(() => {
+    localStorage.setItem("correctAnswersTotal", correctAnswersTotal);
+  }, [correctAnswersTotal]);
+
+  useEffect(() => {
+    if (currentQuestionIndex >= apiData.length && apiData.length > 0) {
+      // Update the total score when the quiz is completed
+      setCorrectAnswersTotal((prevTotal) => {
+        const newTotal = prevTotal + rightCorrectAnswers;
+        localStorage.setItem("correctAnswersTotal", newTotal); // Save to local storage
+        return newTotal;
+      });
+    }
+  }, [currentQuestionIndex, apiData.length, rightCorrectAnswers]);
+
   // While loading or if there's an error
   if (loading) {
     return <div>Loading, please wait...</div>;
@@ -74,7 +94,6 @@ const GeneralKnowledge = () => {
           cursor: "pointer",
         }}
         onClick={() => {
-          setCorrectAnswersTotal((prevTotal) => prevTotal + rightCorrectAnswers); // Add current correct answers to overall correct answer total
           setCurrentQuestionIndex(0); // Reset question index
           setRightCorrectAnswers(0); // Reset correct answers count
           fetchTriviaData();
