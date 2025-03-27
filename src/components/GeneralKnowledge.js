@@ -12,6 +12,7 @@ const GeneralKnowledge = () => {
     const storedTotal = localStorage.getItem("correctAnswersTotal");
     return storedTotal ? parseInt(storedTotal, 10) : 0;
   });
+
   // Function to randomize the position of possible answers
   const randomise = (answers) => {
     return answers.sort(() => Math.random() - 0.5);
@@ -68,7 +69,7 @@ const GeneralKnowledge = () => {
         localStorage.setItem("correctAnswersTotal", newTotal); // Save to local storage
         return newTotal;
       });
-    }, []); // Empty dependency array ensures this runs only once when the end screen is displayed
+    }, []);
 
     return (
       <div>
