@@ -41,6 +41,16 @@ app.get('/api/profiles', async (req, res) => {
     res.status(200).json({profiles})
 });
 
+// Fetch all profiles as a list
+app.get('/api/profiles/list', async (req, res) => {
+    try {
+        const profiles = await profileModel.find({}, 'username'); // Fetch only usernames
+        res.status(200).json(profiles);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching profiles', error });
+    }
+});
+
 //Push profile data to database
 app.post('/api/profiles', async (req, res)=>{
 
