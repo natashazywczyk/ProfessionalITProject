@@ -1,12 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CreateProfile = () => {
     //Information to be stored
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [profilePicture, setProfilePicture] = useState('');
-    //const [score, setScore] = useState('');
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -14,8 +15,11 @@ const CreateProfile = () => {
         console.log(profile);
 
         axios.post('http://localhost:4000/api/profiles', profile)
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err.data));
+        .then((res) => {
+          console.log(res.data);
+          navigate('/login'); // Redirect to LoginPage after successful profile creation
+      })
+      .catch((err) => console.log(err));
     }
 
     return (
