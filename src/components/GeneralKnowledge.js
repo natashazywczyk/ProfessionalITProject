@@ -7,6 +7,7 @@ const GeneralKnowledge = () => {
   const [error, setError] = useState(null); // Handle errors
   const [rightCorrectAnswers, setRightCorrectAnswers] = useState(0); // Keeps track of the user's correct answer guesses
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(null); // Track the correct answer to show it when answer is guessed
+  const [showWrongAnswer, setShowWrongAnswer] = useState(null); // Track the wrong answer to show it when answer is guessed
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question index
   const [correctAnswersTotal, setCorrectAnswersTotal] = useState(() => {
     // Retrieve the total correct answers from local storage or default to 0
@@ -28,11 +29,14 @@ const GeneralKnowledge = () => {
 
     if (chosenAnswer === correctAnswer) {
       setRightCorrectAnswers((prevCount) => prevCount + 1); // Increment if the answer is correct
+    } else {
+      setShowWrongAnswer(answerIndex); // Highlight the wrong answer
     }
 
-    // Reset the highlight and move to the next question after 2 seconds
+    // Reset the highlights and move to the next question after 2 seconds
     setTimeout(() => {
       setShowCorrectAnswer(null);
+      setShowWrongAnswer(null);
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     }, 2000);
   };
@@ -169,8 +173,7 @@ const GeneralKnowledge = () => {
                       width: "350px",
                       padding: "20px 40px",
                       margin: "0",
-                      backgroundColor:
-                        showCorrectAnswer === answerIndex ? "green" : "Purple",
+                      backgroundColor: showCorrectAnswer === answerIndex ? "green" : showWrongAnswer === answerIndex ? "red" : "Purple",
                       color: "white",
                       border: "none",
                       borderRadius: "5px",
