@@ -7,7 +7,7 @@ const LoginPage = () => {
     const [errorMessage, setErrorMessage] = useState(''); // State to store error messages
 
     useEffect(() => {
-        // Fetch all profiles from the backend
+        // Fetch all profiles from server.js
         const fetchProfiles = async () => {
             try {
                 const response = await fetch('http://localhost:4000/api/profiles');
@@ -37,17 +37,17 @@ const LoginPage = () => {
 
         if (matchingProfile) {
             // Successful login
-            alert(`Welcome, ${matchingProfile.username}!`);
+            alert("Welcome, ${matchingProfile.username}!");
             // Redirect or perform further actions here
         } else {
             // Failed login
-            setErrorMessage('Invalid username or password. Please try again.');
+            setErrorMessage("Invalid username or password. Please try again.");
         }
     };
 
     return (
         <div>
-            <h2>Login to Your Trivia Profile</h2>
+            <h2>Login Page</h2>
             <br />
             <div className="container w-50 mt-6">
                 <form onSubmit={handleSubmit}>
@@ -58,6 +58,7 @@ const LoginPage = () => {
                             className="form-control"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="form-group">
@@ -67,10 +68,11 @@ const LoginPage = () => {
                             className="form-control"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                     </div>
                     <br />
-                    {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                    {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
                     <div className="form-group">
                         <input type="submit" value="Login" className="btn btn-primary" />
                     </div>
