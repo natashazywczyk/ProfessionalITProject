@@ -34,18 +34,14 @@ const profileSchema = new mongoose.Schema({
 //Initialize model based schema
 const profileModel = new mongoose.model('myprofiles', profileSchema);
 
-//Find all profiles in database
+// Find all profiles in database
 app.get('/api/profiles', async (req, res) => {
-    const profiles = await profileModel.find({});
-
-    res.status(200).json({profiles})
-});
-
-//Find all profiles in database
-app.get('/api/profiles', async (req, res) => {
-    const profile = await listModel.find({});
-
-    res.status(200).json({profile})
+    try {
+        const profiles = await profileModel.find({});
+        res.status(200).json(profiles); // Ensure this is an array
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch profiles' });
+    }
 });
 
 //Push profile data to database
