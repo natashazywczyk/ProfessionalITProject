@@ -8,11 +8,12 @@ const GeneralKnowledge = () => {
   const [rightCorrectAnswers, setRightCorrectAnswers] = useState(0); // Keeps track of the user's correct answer guesses
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(null); // Track the correct answer to show it when answer is guessed
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question index
-  const [correctAnswersTotal, setCorrectAnswersTotal ] = useState(() => { // Keeps track of user's overall correct answer guesses
+  const [correctAnswersTotal, setCorrectAnswersTotal] = useState(() => {
     // Retrieve the total correct answers from local storage or default to 0
     const storedTotal = localStorage.getItem("correctAnswersTotal");
     return storedTotal ? parseInt(storedTotal, 10) : 0;
   });
+  const [allAnswers, setAllAnswers] = useState([]); // Store randomized answers for the current question
 
   // Function to randomize the position of possible answers
   const randomise = (answers) => {
@@ -48,16 +49,29 @@ const GeneralKnowledge = () => {
         setError("There was an error with the request.");
         setLoading(false);
         console.error(error); // Display error to console
-    });
+      });
   };
-    useEffect(() => {
-      fetchTriviaData();
+
+  useEffect(() => {
+    fetchTriviaData();
   }, []);
 
   // Update local storage whenever correctAnswersTotal changes
   useEffect(() => {
     localStorage.setItem("correctAnswersTotal", correctAnswersTotal);
   }, [correctAnswersTotal]);
+
+  // Randomize answers when the question changes
+  useEffect(() => {
+    if (apiData.length > 0 && currentQuestionIndex < apiData.length) {
+      const currentQuestion = apiData[currentQuestionIndex];
+      const randomizedAnswers = randomise([
+        currentQuestion.correctAnswer,
+        ...currentQuestion.incorrectAnswers,
+      ]);
+      setAllAnswers(randomizedAnswers);
+    }
+  }, [currentQuestionIndex, apiData]);
 
   useEffect(() => {
     if (currentQuestionIndex >= apiData.length && apiData.length > 0) {
@@ -84,7 +98,7 @@ const GeneralKnowledge = () => {
     return (
       <div>
         <h1>Quiz Complete!</h1>
-        <p>You answered {rightCorrectAnswers} out of {apiData.length} questions correctly.</p>
+        <p>          You answered {rightCorrectAnswers} out of {apiData.length} questions           correctly.        </p>
         {rightCorrectAnswers >= 5 ? (
           <p>Well done! You answered over half correct. Keep it up!</p>
         ) : (
@@ -92,32 +106,28 @@ const GeneralKnowledge = () => {
         )}
         {/* Button to restart quiz */}
         <button
-        style={{
-          marginTop: "20px",
-          padding: "10px 20px",
-          backgroundColor: "Purple",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-        onClick={() => {
-          setCurrentQuestionIndex(0); // Reset question index
-          setRightCorrectAnswers(0); // Reset correct answers count
-          fetchTriviaData();
-        }}> 
+          style={{
+            marginTop: "20px",
+            padding: "10px 20px",
+            backgroundColor: "Purple",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setCurrentQuestionIndex(0); // Reset question index
+            setRightCorrectAnswers(0); // Reset correct answers count
+            fetchTriviaData();
+          }}
+        >
           Restart Quiz
         </button>
       </div>
     );
   }
 
-  // Get the current question
   const currentQuestion = apiData[currentQuestionIndex];
-  const allAnswers = randomise([
-    currentQuestion.correctAnswer,
-    ...currentQuestion.incorrectAnswers,
-  ]);
 
   return (
     <div>
@@ -126,7 +136,7 @@ const GeneralKnowledge = () => {
         Correct Answers: {rightCorrectAnswers}
       </div>
 
-      <div style= {{position: "absolute", top: "50px", right: "10px"}}>
+      <div style={{ position: "absolute", top: "50px", right: "10px" }}>
         Total Correct Answers: {correctAnswersTotal}
       </div>
 
@@ -134,10 +144,11 @@ const GeneralKnowledge = () => {
       <div>
         {/* Display the current question */}
         <div key={currentQuestion.id}>
-          <h3>Question {currentQuestionIndex + 1}:</h3> {/* Display question number */}
+          <h3>Question {currentQuestionIndex + 1}:</h3>{" "}
+          {/* Display question number */}
           <h5>{currentQuestion.question.text}</h5> {/* Display question text */}
           <div>
-            <p style={{marginTop: "150px"}}>Choose One: </p>
+            <p style={{ marginTop: "150px" }}>Choose One: </p>
             <ul
               style={{
                 listStyleType: "none",
@@ -147,7 +158,7 @@ const GeneralKnowledge = () => {
                 gridTemplateColumns: "repeat(2, auto)", // Use auto width for columns
                 gap: "5px",
                 justifyContent: "center", // Center the grid horizontally
-                marginTop: "20px"
+                marginTop: "20px",
               }}
             >
               {/* Display possible answers */}
@@ -158,14 +169,19 @@ const GeneralKnowledge = () => {
                       width: "350px",
                       padding: "20px 40px",
                       margin: "0",
-                      backgroundColor: showCorrectAnswer === answerIndex ? "green" : "Purple",
+                      backgroundColor:
+                        showCorrectAnswer === answerIndex ? "green" : "Purple",
                       color: "white",
                       border: "none",
                       borderRadius: "5px",
                       cursor: "pointer",
                     }}
                     onClick={() =>
-                      handleAnswerClick(answer, currentQuestion.correctAnswer, answerIndex)
+                      handleAnswerClick(
+                        answer,
+                        currentQuestion.correctAnswer,
+                        answerIndex
+                      )
                     } // Pass answerIndex here
                   >
                     {answer}
