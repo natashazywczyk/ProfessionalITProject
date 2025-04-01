@@ -21,14 +21,17 @@ const GeneralKnowledge = () => {
 
   // Function to handle when an answer is clicked
   const handleAnswerClick = (chosenAnswer, correctAnswer, answerIndex) => {
+    // Highlight the correct answer
+    const correctAnswerIndex = allAnswers.findIndex((answer) => answer === correctAnswer);
+    setShowCorrectAnswer(correctAnswerIndex);
+
     if (chosenAnswer === correctAnswer) {
       setRightCorrectAnswers((prevCount) => prevCount + 1); // Increment if the answer is correct
-      setShowCorrectAnswer(answerIndex); // Show the correct answer
-      setTimeout(() => setShowCorrectAnswer(null), 2000);
     }
 
-    // Move to the next question
+    // Reset the highlight and move to the next question after 2 seconds
     setTimeout(() => {
+      setShowCorrectAnswer(null);
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     }, 2000);
   };
