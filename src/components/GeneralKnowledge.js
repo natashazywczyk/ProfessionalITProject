@@ -6,6 +6,7 @@ const GeneralKnowledge = () => {
   const [loading, setLoading] = useState(true); // Display while fetch is happening
   const [error, setError] = useState(null); // Handle errors
   const [rightCorrectAnswers, setRightCorrectAnswers] = useState(0); // Keeps track of the user's correct answer guesses
+  const [showCorrectAnswer, setShowCorrectAnswer] = useState(null); // Track the correct answer to show it when answer is guessed
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question index
   const [correctAnswersTotal, setCorrectAnswersTotal ] = useState(() => { // Keeps track of user's overall correct answer guesses
     // Retrieve the total correct answers from local storage or default to 0
@@ -19,13 +20,17 @@ const GeneralKnowledge = () => {
   };
 
   // Function to handle when an answer is clicked
-  const handleAnswerClick = (chosenAnswer, correctAnswer) => {
+  const handleAnswerClick = (chosenAnswer, correctAnswer, answerIndex) => {
     if (chosenAnswer === correctAnswer) {
       setRightCorrectAnswers((prevCount) => prevCount + 1); // Increment if the answer is correct
+      setShowCorrectAnswer(answerIndex); // Show the correct answer
+      setTimeout(() => setShowCorrectAnswer(null), 2000);
     }
 
     // Move to the next question
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    setTimeout(() => {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    }, 2000);
   };
 
   const fetchTriviaData = () => {
@@ -150,15 +155,15 @@ const GeneralKnowledge = () => {
                       width: "350px",
                       padding: "20px 40px",
                       margin: "0",
-                      backgroundColor: "Purple",
+                      backgroundColor: showCorrectAnswer === answerIndex ? "green" : "Purple",
                       color: "white",
                       border: "none",
                       borderRadius: "5px",
                       cursor: "pointer",
                     }}
                     onClick={() =>
-                      handleAnswerClick(answer, currentQuestion.correctAnswer)
-                    } // Check if the clicked answer is correct
+                      handleAnswerClick(answer, currentQuestion.correctAnswer, answerIndex)
+                    } // Pass answerIndex here
                   >
                     {answer}
                   </button>
