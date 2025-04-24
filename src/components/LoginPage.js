@@ -1,47 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase'; // Import Firebase auth
+import axios from 'axios';
 
 const LoginPage = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [profiles, setProfiles] = useState([]); // State to store all profiles
     const [errorMessage, setErrorMessage] = useState(''); // State to store error messages
 
-    useEffect(() => {
-        // Fetch all profiles from server.js
-        const fetchProfiles = async () => {
-            try {
-                const response = await fetch('http://localhost:4000/api/profiles');
-                const data = await response.json();
-
-                // Check if the response contains profiles
-                if (data && Array.isArray(data.profiles)) {
-                    setProfiles(data.profiles); // Store profiles in state
-                } else {
-                    console.error('Unexpected response format:', data);
-                }
-            } catch (error) {
-                console.error('Error fetching profiles:', error);
-            }
-        };
-
-        fetchProfiles();
-    }, []); // Run only once when the component loads
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Check if the entered username and password match any profile
-        const matchingProfile = profiles.find(
-            (profile) => profile.username === username && profile.password === password
-        );
+        try {
+            //Firebase login
+            const userLogin = await signInWithEmailAndPassword(auth, email, password);
+            const uid = userLogin.user.uid;
 
-        if (matchingProfile) {
-            // Successful login
-            alert("Welcome, ${matchingProfile.username}!");
-            // Redirect or perform further actions here
-        } else {
-            // Failed login
-            setErrorMessage("Invalid username or password. Please try again.");
+            console.log('Logged in user UID:', uid);
+
+            //Use the UID to get user inf9ormation from mongoDB
+            const response = await axios.get(`http://localhost:4000/api/profiles?uid=${uid}`);
+            const userProfile = response.data;
+
+            if (userProfile) {
+                alert("Welcome!");
+                // Perform further actions, such as redirecting to a dashboard
+            } 
+            else {
+                setErrorMessage('User profile not found in the database.');
+            }
+        } 
+        catch (error) {
+            console.error('Error logging in:', error);
         }
     };
 
@@ -52,17 +42,19 @@ const LoginPage = () => {
             <div className="container w-50 mt-6">
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Username: </label>
+                        <label>Email: </label>
+                        {/*Email Input */}
                         <input
-                            type="text"
+                            type="email"
                             className="form-control"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>
                     <div className="form-group">
                         <label>Password: </label>
+                        {/*Password Input */}
                         <input
                             type="password"
                             className="form-control"
@@ -72,7 +64,7 @@ const LoginPage = () => {
                         />
                     </div>
                     <br />
-                    {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+                    {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                     <div className="form-group">
                         <input type="submit" value="Login" className="btn btn-primary" />
                     </div>
