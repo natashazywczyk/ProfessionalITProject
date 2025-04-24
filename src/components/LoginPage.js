@@ -66,7 +66,15 @@ const LoginPage = () => {
                     <br />
                     {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                     <div className="form-group">
-                        <input type="submit" value="Login" className="btn btn-primary" />
+                        <input type="submit" value="Login" style=
+                            {{ 
+                                backgroundColor: "#9587f8", 
+                                color: "white", 
+                                border: "none", 
+                                borderRadius: "10px",
+                                padding: "10px 20px"
+                            }}
+                        />
                     </div>
                 </form>
             </div>
