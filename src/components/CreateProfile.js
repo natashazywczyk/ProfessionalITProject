@@ -74,6 +74,7 @@ const CreateProfile = () => {
                       onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
+                <br></br>
                 <div className="form-group">
                   <label>Email: </label>
                   {/*Email Input */}
@@ -85,6 +86,7 @@ const CreateProfile = () => {
                       required
                   />
                 </div>
+                <br></br>
                 <div className="form-group">
                   <label>Password: </label>
                   {/*Password Input */}
@@ -96,6 +98,7 @@ const CreateProfile = () => {
                       required
                   />
                 </div>
+                <br></br>
                 <div className="form-group">
                   <label>Profile Picture: </label>
                   {/*Profile Picture Input */}
@@ -107,12 +110,30 @@ const CreateProfile = () => {
                 </div>
                 <br />
                 <div className="form-group">
-                    <input type="submit" value="Create Profile" className="btn btn-success" />
+                  <input type="submit" value="Create Profile"  style=
+                    {{ 
+                      backgroundColor: "#9587f8", 
+                      color: "white", 
+                      border: "none", 
+                      borderRadius: "10px",
+                      padding: "10px"
+                    }} 
+                  />
                 </div>
             </form>
           </div>
+          <br></br><br></br>
         <p>Already have an account?</p>
-        <button className="btn btn-primary" onClick={() => navigate("/login")}>Login</button>
+        <button 
+        style=
+        {{ 
+          backgroundColor: "#d2afff", 
+          color: "white", 
+          border: "none", 
+          borderRadius: "10px"
+        }} onClick={() => navigate("/login")}>
+          Login
+        </button>
       </div>
     );
 };
