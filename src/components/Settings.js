@@ -22,10 +22,15 @@ const Settings = () => {
   };
 
   const handleLogout = async () => {
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (!confirmLogout) {
+      return; //If cancel clicked, stay logged in
+    }
+
     try {
-      await signOut(auth); // Log out the user
+      await signOut(auth); //Log out
       console.log("User logged out successfully.");
-      navigate("/login"); // Redirect to the login page
+      navigate("/login"); //Navigate to login page
     } catch (error) {
       console.error("Error logging out:", error);
       alert("Failed to log out. Please try again.");
@@ -50,7 +55,8 @@ const Settings = () => {
         className="btn btn-danger"
         onClick={handleLogout}
         style={{ marginTop: "20px" }}
-      > Log Out
+      >
+        Log Out
       </button>
     </div>
   );
