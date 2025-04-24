@@ -38,6 +38,7 @@ const LoginPage = () => {
     return (
         <div>
             <h2>Login Page</h2>
+            <h5>Log into your account below</h5>
             <br />
             <div className="container w-50 mt-6">
                 <form onSubmit={handleSubmit}>
