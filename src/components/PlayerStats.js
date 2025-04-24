@@ -31,11 +31,13 @@ const PlayerStats = () => {
 
     return (
         <div>
-            <h1>Player Stats</h1>
+            <h1>Player Leaderboard</h1>
+            <h4></h4>
             {profiles.length > 0 ? (
-                profiles.map((profile) => (
+                profiles.map((profile, index) => (
                     <PlayerStatsItem
                         myprofiles={profile} // Pass each profile to PlayerStatsItem
+                        rank={index + 1} // Keeps track of place in leaderboard
                         key={profile._id}
                     />
                 ))
