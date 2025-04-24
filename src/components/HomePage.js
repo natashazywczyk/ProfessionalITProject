@@ -6,11 +6,13 @@ const HomePage = () => {
 
             <p>This is your Trivia Quiz app!
                 <br></br><br></br>
-                Here you can take many types of quizzes: General Knowledge, 
-                History, Geography, and even your own custom quizzes! 
+                Here you can choose between multiple quizzes surrounding different subjects!
+                <br></br><br></br>
+                Compete against your friends for the highest score overall.
                 <br></br>
-                You can also create a profile to keep track of your scores, and compare them to your 
-                friends!
+                The leaderboard will be sure to show who has the best general knowledge!
+                <br></br><br></br>
+                Get started by clicking "Profile Settings" above to save your quiz scores.
             </p>
         </div>
     );
