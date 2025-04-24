@@ -10,11 +10,7 @@ const GeneralKnowledge = () => {
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(null); // Track the correct answer to show it when answer is guessed
   const [showWrongAnswer, setShowWrongAnswer] = useState(null); // Track the wrong answer to show it when answer is guessed
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question index
-  const [correctAnswersTotal, setCorrectAnswersTotal] = useState(() => {
-    // Retrieve the total correct answers from local storage or default to 0 if no pr4evious total score
-    const storedTotal = localStorage.getItem("correctAnswersTotal");
-    return storedTotal ? parseInt(storedTotal, 10) : 0;
-  });
+
   const [allAnswers, setAllAnswers] = useState([]); // Store randomized answers for the current question
 
   const [scoreUpdated, setScoreUpdated] = useState(false); // Checks to see if score has already been updated
@@ -85,10 +81,6 @@ const GeneralKnowledge = () => {
     fetchTriviaData();
   }, []);
 
-  // Update local storage whenever correctAnswersTotal changes
-  useEffect(() => {
-    localStorage.setItem("correctAnswersTotal", correctAnswersTotal);
-  }, [correctAnswersTotal]);
 
   // Randomize answers when the question changes
   useEffect(() => {
@@ -106,11 +98,6 @@ const GeneralKnowledge = () => {
     if (currentQuestionIndex >= apiData.length && apiData.length > 0 && !scoreUpdated) {
         // Update the total score when the quiz is completed
         updateScoreInDatabase(rightCorrectAnswers); // Update score by correct answers
-        setCorrectAnswersTotal((prevTotal) => {
-            const newTotal = prevTotal + rightCorrectAnswers;
-            localStorage.setItem("correctAnswersTotal", newTotal); // Save to local storage
-            return newTotal;
-        });
         setScoreUpdated(true); // Mark the score as updated, preventing multiple updates at once
     }
 }, [currentQuestionIndex, apiData.length, rightCorrectAnswers, scoreUpdated]);
@@ -166,10 +153,6 @@ const GeneralKnowledge = () => {
       {/* Display the correct answers counter in the top left, but under the navigation bar */}
       <div style={{ position: "absolute", top: "50px", left: "10px" }}>
         Correct Answers: {rightCorrectAnswers}
-      </div>
-
-      <div style={{ position: "absolute", top: "50px", right: "10px" }}>
-        Total Correct Answers: {correctAnswersTotal}
       </div>
 
       <h1>General Knowledge Quiz</h1>
