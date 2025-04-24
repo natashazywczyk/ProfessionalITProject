@@ -7,8 +7,8 @@ const PickQuiz = () => {
     return (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
             <h1>Pick Your Quiz Type</h1>
-            <div style={{ marginTop: "30px" }}>
-                {/* Button for Text Choice Questions */}
+            <div>
+                {/* Click to go to text question quiz */}
                 <button
                     style={{
                         padding: "15px 30px",
@@ -20,26 +20,26 @@ const PickQuiz = () => {
                         cursor: "pointer",
                         fontSize: "16px",
                     }}
-                    onClick={() => navigate("/generalknowledge")} // Redirect to GeneralKnowledge
+                    onClick={() => navigate("/generalknowledge")}
                 >
-                    Text Choice Questions
+                    General Knowledge
                 </button>
 
-                {/* Button for Picture Questions */}
+                {/* Click to get picture quesiton quiz*/}
                 <button
                     style={{
                         padding: "15px 30px",
                         margin: "10px",
-                        backgroundColor: "green",
+                        backgroundColor: "purple",
                         color: "white",
                         border: "none",
                         borderRadius: "5px",
                         cursor: "pointer",
                         fontSize: "16px",
                     }}
-                    onClick={() => alert("Picture Questions Coming Soon!")} // Placeholder for now
+                    onClick={() => navigate("/historyquiz")} // Placeholder for now
                 >
-                    Picture Questions
+                    History
                 </button>
             </div>
         </div>
