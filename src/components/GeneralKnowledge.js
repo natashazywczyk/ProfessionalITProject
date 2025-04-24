@@ -140,7 +140,7 @@ const GeneralKnowledge = () => {
           style={{
             marginTop: "20px",
             padding: "10px 20px",
-            backgroundColor: "Purple",
+            backgroundColor: "#9587f8",
             color: "white",
             border: "none",
             borderRadius: "5px",
@@ -194,31 +194,39 @@ const GeneralKnowledge = () => {
               }}
             >
               {/* Display possible answers */}
-              {allAnswers.map((answer, answerIndex) => (
-                <li key={answerIndex}>
-                  <button
-                    style={{
-                      width: "350px",
-                      padding: "20px 40px",
-                      margin: "0",
-                      backgroundColor: showCorrectAnswer === answerIndex ? "green" : showWrongAnswer === answerIndex ? "red" : "Purple",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() =>
-                      handleAnswerClick(
-                        answer,
-                        currentQuestion.correctAnswer,
-                        answerIndex
-                      )
-                    } // Pass answerIndex here
-                  >
-                    {answer}
-                  </button>
-                </li>
-              ))}
+              {allAnswers.map((answer, answerIndex) => {
+                const buttonColors = ["#87bdf8", "#9587f8", "#d987f8", "#f887b2"];
+                const backgroundColor =
+                  showCorrectAnswer === answerIndex ? "#35ee65"
+                    : showWrongAnswer === answerIndex ? "#f84545"
+                    : buttonColors[answerIndex]
+
+                return (
+                  <li key={answerIndex}>
+                    <button
+                      style={{
+                        width: "350px",
+                        padding: "20px 40px",
+                        margin: "0",
+                        backgroundColor: backgroundColor, 
+                        color: "white",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        handleAnswerClick(
+                          answer,
+                          currentQuestion.correctAnswer,
+                          answerIndex
+                        )
+                      }
+                    >
+                      {answer}
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

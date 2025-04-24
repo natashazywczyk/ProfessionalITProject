@@ -178,34 +178,41 @@ const MusicQuiz = () => {
   
         <h1>Music Quiz</h1>
         <div>
-          {/* Display the current question */}
-          <div key={currentQuestion.id}>
-            <h3>Question {currentQuestionIndex + 1}:</h3>{" "}
-            {/* Display question number */}
-            <h5>{currentQuestion.question.text}</h5> {/* Display question text */}
-            <div>
-              <p style={{ marginTop: "150px" }}>Choose One: </p>
-              <ul
-                style={{
-                  listStyleType: "none",
-                  padding: "0",
-                  textAlign: "center",
-                  display: "grid", // Use grid layout
-                  gridTemplateColumns: "repeat(2, auto)", // Use auto width for columns
-                  gap: "5px",
-                  justifyContent: "center", // Center the grid horizontally
-                  marginTop: "20px",
-                }}
-              >
-                {/* Display possible answers */}
-                {allAnswers.map((answer, answerIndex) => (
+        {/* Display the current question */}
+        <div key={currentQuestion.id}>
+          <h3>Question {currentQuestionIndex + 1}:</h3>{" "}
+          {/* Display question number */}
+          <h5>{currentQuestion.question.text}</h5> {/* Display question text */}
+          <div>
+            <p style={{ marginTop: "150px" }}>Choose One: </p>
+            <ul
+              style={{
+                listStyleType: "none",
+                padding: "0",
+                textAlign: "center",
+                display: "grid", // Use grid layout
+                gridTemplateColumns: "repeat(2, auto)", // Use auto width for columns
+                gap: "5px",
+                justifyContent: "center", // Center the grid horizontally
+                marginTop: "20px",
+              }}
+            >
+              {/* Display possible answers */}
+              {allAnswers.map((answer, answerIndex) => {
+                const buttonColors = ["#87bdf8", "#9587f8", "#d987f8", "#f887b2"];
+                const backgroundColor =
+                  showCorrectAnswer === answerIndex ? "#35ee65"
+                    : showWrongAnswer === answerIndex ? "#f84545"
+                    : buttonColors[answerIndex]
+
+                return (
                   <li key={answerIndex}>
                     <button
                       style={{
                         width: "350px",
                         padding: "20px 40px",
                         margin: "0",
-                        backgroundColor: showCorrectAnswer === answerIndex ? "green" : showWrongAnswer === answerIndex ? "red" : "Purple",
+                        backgroundColor: backgroundColor, 
                         color: "white",
                         border: "none",
                         borderRadius: "5px",
@@ -217,19 +224,19 @@ const MusicQuiz = () => {
                           currentQuestion.correctAnswer,
                           answerIndex
                         )
-                      } // Pass answerIndex here
+                      }
                     >
                       {answer}
                     </button>
                   </li>
-                ))}
-              </ul>
-            </div>
+                );
+              })}
+            </ul>
           </div>
         </div>
       </div>
-    );
-  };
-
+    </div>
+  );
+};
 
 export default MusicQuiz;
