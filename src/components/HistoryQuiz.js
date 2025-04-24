@@ -3,52 +3,46 @@ import axios from "axios";
 import { auth } from "../firebase";
 
 const HistoryQuiz = () => {
-  const [apiData, setApiData] = useState([]); // Store data from API
-  const [loading, setLoading] = useState(true); // Display while fetch is happening
-  const [error, setError] = useState(null); // Handle errors
-  const [rightCorrectAnswers, setRightCorrectAnswers] = useState(0); // Keeps track of the user's correct answer guesses
-  const [showCorrectAnswer, setShowCorrectAnswer] = useState(null); // Track the correct answer to show it when answer is guessed
-  const [showWrongAnswer, setShowWrongAnswer] = useState(null); // Track the wrong answer to show it when answer is guessed
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question index
-  const [correctAnswersTotal, setCorrectAnswersTotal] = useState(() => {
-    // Retrieve the total correct answers from local storage or default to 0 if no pr4evious total score
-    const storedTotal = localStorage.getItem("correctAnswersTotal");
-    return storedTotal ? parseInt(storedTotal, 10) : 0;
-  });
-  const [allAnswers, setAllAnswers] = useState([]); // Store randomized answers for the current question
-
-  const [scoreUpdated, setScoreUpdated] = useState(false); // Checks to see if score has already been updated
-
-  // Function to randomize the position of possible answers
-  const randomise = (answers) => {
-    return answers.sort(() => Math.random() - 0.5);
-  };
-
-  // Function to handle when an answer is clicked
-  const handleAnswerClick = (chosenAnswer, correctAnswer, answerIndex) => {
-    // Highlight the correct answer
-    const correctAnswerIndex = allAnswers.findIndex((answer) => answer === correctAnswer);
-    setShowCorrectAnswer(correctAnswerIndex);
-
-    if (chosenAnswer === correctAnswer) {
-      setRightCorrectAnswers((prevCount) => prevCount + 1); // Increment if the answer is correct
-    } else {
-      setShowWrongAnswer(answerIndex); // Highlight the wrong answer
-    }
-
-    // Reset the colours and move to the next question after 2 seconds
-    setTimeout(() => {
-      setShowCorrectAnswer(null);
-      setShowWrongAnswer(null);
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-    }, 2000);
-  };
+ const [apiData, setApiData] = useState([]); // Store data from API
+   const [loading, setLoading] = useState(true); // Display while fetch is happening
+   const [error, setError] = useState(null); // Handle errors
+   const [rightCorrectAnswers, setRightCorrectAnswers] = useState(0); // Keeps track of the user's correct answer guesses
+   const [showCorrectAnswer, setShowCorrectAnswer] = useState(null); // Track the correct answer to show it when answer is guessed
+   const [showWrongAnswer, setShowWrongAnswer] = useState(null); // Track the wrong answer to show it when answer is guessed
+   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question index
+   const [allAnswers, setAllAnswers] = useState([]); // Store randomized answers for the current question
+   const [scoreUpdated, setScoreUpdated] = useState(false); // Checks to see if score has already been updated
+   const [timeLeft, setTimeLeft] = useState(10); // Timer for each question
+ 
+   // Function to randomize the position of possible answers
+   const randomise = (answers) => {
+     return answers.sort(() => Math.random() - 0.5);
+   };
+ 
+   // Function to handle when an answer is clicked
+   const handleAnswerClick = (chosenAnswer, correctAnswer, answerIndex) => {
+     const correctAnswerIndex = allAnswers.findIndex((answer) => answer === correctAnswer);
+     setShowCorrectAnswer(correctAnswerIndex);
+ 
+     if (chosenAnswer === correctAnswer) {
+       setRightCorrectAnswers((prevCount) => prevCount + 1);
+     } else {
+       setShowWrongAnswer(answerIndex);
+     }
+ 
+     setTimeout(() => {
+       setShowCorrectAnswer(null);
+       setShowWrongAnswer(null);
+       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+       setTimeLeft(10); //Sets timer back to 10
+     }, 2000);
+   };
 
   const fetchTriviaData = () => {
     axios
       .get("https://the-trivia-api.com/v2/questions", {
         params: {
-          categories: "history", // Fetch questions only from the 'history' category
+          categories: "history", // Gets history style questions
         },
       })
       .then((response) => {
@@ -63,6 +57,40 @@ const HistoryQuiz = () => {
         console.error(error);
       });
   };
+
+  // Timer logic
+    useEffect(() => {
+      if (timeLeft === 0) {
+        // If time runs out, show the correct answer and move to the next question
+        const correctAnswerIndex = allAnswers.indexOf(apiData[currentQuestionIndex]?.correctAnswer);
+        setShowCorrectAnswer(correctAnswerIndex);
+  
+        setTimeout(() => {
+          setShowCorrectAnswer(null);
+          setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+          setTimeLeft(10); // Sets timer back to 10
+        }, 2000);
+      }
+  
+      const timer = setInterval(() => {
+        setTimeLeft((prevTime) => Math.max(prevTime - 1, 0)); // Once it hits zero, answer is shown and timer stops
+      }, 1000);
+  
+      return () => clearInterval(timer); // Makes sure to reset timer once timer runs out/question is answered
+    }, [timeLeft, allAnswers, currentQuestionIndex, apiData]);
+  
+    // Randomize answers when the question changes
+    useEffect(() => {
+      if (apiData.length > 0 && currentQuestionIndex < apiData.length) {
+        const currentQuestion = apiData[currentQuestionIndex];
+        const randomizedAnswers = randomise([
+          currentQuestion.correctAnswer,
+          ...currentQuestion.incorrectAnswers,
+        ]);
+        setAllAnswers(randomizedAnswers);
+      }
+    }, [currentQuestionIndex, apiData]);
+  
 
   // Update user specific score to database
   const updateScoreInDatabase = async (score) => {
@@ -89,11 +117,6 @@ const HistoryQuiz = () => {
     fetchTriviaData();
   }, []);
 
-  // Update local storage whenever correctAnswersTotal changes
-  useEffect(() => {
-    localStorage.setItem("correctAnswersTotal", correctAnswersTotal);
-  }, [correctAnswersTotal]);
-
   // Randomize answers when the question changes
   useEffect(() => {
     if (apiData.length > 0 && currentQuestionIndex < apiData.length) {
@@ -110,11 +133,6 @@ const HistoryQuiz = () => {
     if (currentQuestionIndex >= apiData.length && apiData.length > 0 && !scoreUpdated) {
         // Update the total score when the quiz is completed
         updateScoreInDatabase(rightCorrectAnswers); // Update score by correct answers
-        setCorrectAnswersTotal((prevTotal) => {
-            const newTotal = prevTotal + rightCorrectAnswers;
-            localStorage.setItem("correctAnswersTotal", newTotal); // Save to local storage
-            return newTotal;
-        });
         setScoreUpdated(true); // Mark the score as updated, preventing multiple updates at once
     }
 }, [currentQuestionIndex, apiData.length, rightCorrectAnswers, scoreUpdated]);
@@ -151,10 +169,11 @@ const HistoryQuiz = () => {
             cursor: "pointer",
           }}
           onClick={() => {
-            setCurrentQuestionIndex(0); // Reset question index
-            setRightCorrectAnswers(0); // Reset correct answers count
-            setScoreUpdated(false); // Reset the score updated flag
-            fetchTriviaData(); // Fetch new trivia data
+            setCurrentQuestionIndex(0);
+            setRightCorrectAnswers(0);
+            setScoreUpdated(false);
+            setTimeLeft(10); // Set timer back to 10
+            fetchTriviaData();
           }}
         >
           Restart Quiz
@@ -173,7 +192,7 @@ const HistoryQuiz = () => {
       </div>
 
       <div style={{ position: "absolute", top: "50px", right: "10px" }}>
-        Total Correct Answers: {correctAnswersTotal}
+        Time Left: {timeLeft}s
       </div>
 
       <h1>History Quiz</h1>
@@ -190,10 +209,10 @@ const HistoryQuiz = () => {
                 listStyleType: "none",
                 padding: "0",
                 textAlign: "center",
-                display: "grid", // Use grid layout
-                gridTemplateColumns: "repeat(2, auto)", // Use auto width for columns
+                display: "grid",
+                gridTemplateColumns: "repeat(2, auto)", 
                 gap: "5px",
-                justifyContent: "center", // Center the grid horizontally
+                justifyContent: "center", 
                 marginTop: "20px",
               }}
             >
@@ -219,11 +238,7 @@ const HistoryQuiz = () => {
                         cursor: "pointer",
                       }}
                       onClick={() =>
-                        handleAnswerClick(
-                          answer,
-                          currentQuestion.correctAnswer,
-                          answerIndex
-                        )
+                        handleAnswerClick(answer, currentQuestion.correctAnswer,  answerIndex)
                       }
                     >
                       {answer}
