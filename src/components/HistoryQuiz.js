@@ -176,7 +176,7 @@ const HistoryQuiz = () => {
         Total Correct Answers: {correctAnswersTotal}
       </div>
 
-      <h1>Welcome to the Trivia App!</h1>
+      <h1>History Quiz</h1>
       <div>
         {/* Display the current question */}
         <div key={currentQuestion.id}>
