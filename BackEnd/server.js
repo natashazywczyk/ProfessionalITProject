@@ -1,13 +1,13 @@
 //Create Express Application
 const express = require('express');
 const app = express();
-const port = 4000; 
+const port = 4000;
 
 //Add CORS Middleware
 const cors = require('cors');
 app.use(cors());
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -26,9 +26,11 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0.n2bkl.mongodb.net/TriviaSta
 //Stored data
 const profileSchema = new mongoose.Schema({
     username: String,
+    email: String,
     password: String,
     profilePicture: String,
-    score: String
+    score: String,
+    uid: String
 })
 
 //Initialize model based schema
@@ -45,15 +47,54 @@ app.get('/api/profiles', async (req, res) => {
 });
 
 //Push profile data to database
-app.post('/api/profiles', async (req, res)=>{
+app.post('/api/profiles', async (req, res) => {
+    console.log('Received profile data:', req.body); // Add this debug log
 
-    const { username, password, profilePicture, score } = req.body;
-   
-    const newProfile = new profileModel({ username, password, profilePicture, score });
-    await newProfile.save(); //wait until last process is finished
-   
-    res.status(201).json({ message: 'Profile created successfully', profile: newProfile });
+    const { username, password, profilePicture, score, uid, email } = req.body;
+
+    try {
+        const newProfile = new profileModel({ 
+            username, 
+            password, 
+            profilePicture, 
+            score, 
+            uid, 
+            email 
+        });
+        await newProfile.save();
+
+        console.log('Saved profile:', newProfile); // Add this debug log
+        res.status(201).json({ message: 'Profile created successfully', profile: newProfile });
+    } catch (error) {
+        console.error('Error saving profile:', error);
+        res.status(500).json({ error: 'Failed to create profile' });
+    }
 })
+
+// New route to handle updating the UID after login
+app.post('/api/update-profile', async (req, res) => {
+    const { uid, email } = req.body;
+
+    try {
+        // Find the profile by email
+        const profile = await profileModel.findOne({ email: email });
+
+        if (profile) {
+            // Update the profile with the Firebase UID
+            profile.uid = uid;
+            await profile.save();
+
+            res.status(200).json({ message: 'Profile updated with UID successfully' });
+        } 
+        else {
+            res.status(404).json({ message: 'Profile not found' });
+        }
+    } 
+    catch (error) {
+        console.error('Error updating profile with UID:', error);
+        res.status(500).json({ error: 'Failed to update profile with UID' });
+    }
+});
 
 //Only run on 4000 port when running
 app.listen(port, () => {
