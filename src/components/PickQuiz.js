@@ -5,9 +5,10 @@ const PickQuiz = () => {
     const navigate = useNavigate();
 
     return (
-        <div style={{ textAlign: "center", marginTop: "50px" }}>
+        <div>
             <h1>Pick Your Quiz Type</h1>
-            <div>
+            <h4>Choose the type of quiz you'd like to take below!</h4>
+            <div style={{ marginTop: "60px"}}>
                 {/* Click to go to text question quiz */}
                 <button
                     style={{
@@ -25,7 +26,7 @@ const PickQuiz = () => {
                     General Knowledge
                 </button>
 
-                {/* Click to get picture quesiton quiz*/}
+                {/* Click to get history quiz*/}
                 <button
                     style={{
                         padding: "15px 30px",
@@ -37,9 +38,26 @@ const PickQuiz = () => {
                         cursor: "pointer",
                         fontSize: "16px",
                     }}
-                    onClick={() => navigate("/historyquiz")} // Placeholder for now
+                    onClick={() => navigate("/historyquiz")}
                 >
                     History
+                </button>
+
+                {/* Click to get music quiz*/}
+                <button
+                    style={{
+                        padding: "15px 30px",
+                        margin: "10px",
+                        backgroundColor: "purple",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        fontSize: "16px",
+                    }}
+                    onClick={() => navigate("/musicquiz")}
+                >
+                    Music
                 </button>
             </div>
         </div>

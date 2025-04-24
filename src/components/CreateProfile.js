@@ -17,7 +17,7 @@ const CreateProfile = () => {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
           if (user) {
             setCurrentUser(user); // Set the logged-in user
-            console.log('Currently logged-in user:', 
+            console.log("Currently logged-in user:", 
               {
                 uid: user.uid,
                 email: user.email,
@@ -25,7 +25,7 @@ const CreateProfile = () => {
           } 
           else {
             setCurrentUser(null);
-            console.log('No user is currently logged in.');
+            console.log("No user is currently logged in.");
           }
       });
 
@@ -46,11 +46,11 @@ const CreateProfile = () => {
           // Make user profile using values below
           const profile = { username, email, password, profilePicture, score: 0, uid };
 
-          navigate('/login');
+          navigate("/login");
 
           // Push user information to database
           const response = await axios.post("http://localhost:4000/api/profiles", profile);
-          console.log('Profile created successfully:', response.data);
+          console.log("Profile created successfully:", response.data);
       }
       catch (error) {
         console.error("Could not create profile: ", error);
@@ -112,7 +112,7 @@ const CreateProfile = () => {
             </form>
           </div>
         <p>Already have an account?</p>
-        <button className="btn btn-primary" onClick={() => navigate('/login')}>Login</button>
+        <button className="btn btn-primary" onClick={() => navigate("/login")}>Login</button>
       </div>
     );
 };
