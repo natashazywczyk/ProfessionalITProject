@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { auth } from "../firebase";
 
 const GeneralKnowledge = () => {
   const [apiData, setApiData] = useState([]); // Store data from API
@@ -10,11 +11,13 @@ const GeneralKnowledge = () => {
   const [showWrongAnswer, setShowWrongAnswer] = useState(null); // Track the wrong answer to show it when answer is guessed
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question index
   const [correctAnswersTotal, setCorrectAnswersTotal] = useState(() => {
-    // Retrieve the total correct answers from local storage or default to 0
+    // Retrieve the total correct answers from local storage or default to 0 if no pr4evious total score
     const storedTotal = localStorage.getItem("correctAnswersTotal");
     return storedTotal ? parseInt(storedTotal, 10) : 0;
   });
   const [allAnswers, setAllAnswers] = useState([]); // Store randomized answers for the current question
+
+  const [scoreUpdated, setScoreUpdated] = useState(false); // Checks to see if score has already been updated
 
   // Function to randomize the position of possible answers
   const randomise = (answers) => {
@@ -33,7 +36,7 @@ const GeneralKnowledge = () => {
       setShowWrongAnswer(answerIndex); // Highlight the wrong answer
     }
 
-    // Reset the highlights and move to the next question after 2 seconds
+    // Reset the colours and move to the next question after 2 seconds
     setTimeout(() => {
       setShowCorrectAnswer(null);
       setShowWrongAnswer(null);
@@ -42,19 +45,41 @@ const GeneralKnowledge = () => {
   };
 
   const fetchTriviaData = () => {
-    // Fetch randomised questions from the trivia API
+    // Get questions from API
     axios.get("https://the-trivia-api.com/v2/questions/")
       .then((response) => {
         console.log(response.data); // Log response data to check structure
         setApiData(response.data); // Store data to useState
         setLoading(false); // Set loading to false as data is loaded
       })
+      // If any errors
       .catch((error) => {
         setError("There was an error with the request.");
         setLoading(false);
-        console.error(error); // Display error to console
+        console.error(error);
       });
   };
+
+  // Update user specific score to database
+  const updateScoreInDatabase = async (score) => {
+    const currentUser = auth.currentUser; // Get the logged-in user
+    if (!currentUser) {
+        console.error("No user is currently logged in.");
+        return;
+    }
+
+    const uid = currentUser.uid; // Check session's current user id from firebase
+    try {
+        const response = await axios.post("http://localhost:4000/api/updatescore", {
+            uid: uid,
+            score: Number(score),
+        });
+        console.log("Score updated successfully:", response.data);
+    } 
+    catch (error) {
+        console.error("Error updating score in database:", error);
+    }
+};
 
   useEffect(() => {
     fetchTriviaData();
@@ -78,15 +103,17 @@ const GeneralKnowledge = () => {
   }, [currentQuestionIndex, apiData]);
 
   useEffect(() => {
-    if (currentQuestionIndex >= apiData.length && apiData.length > 0) {
-      // Update the total score when the quiz is completed
-      setCorrectAnswersTotal((prevTotal) => {
-        const newTotal = prevTotal + rightCorrectAnswers;
-        localStorage.setItem("correctAnswersTotal", newTotal); // Save to local storage
-        return newTotal;
-      });
+    if (currentQuestionIndex >= apiData.length && apiData.length > 0 && !scoreUpdated) {
+        // Update the total score when the quiz is completed
+        updateScoreInDatabase(rightCorrectAnswers); // Update score by correct answers
+        setCorrectAnswersTotal((prevTotal) => {
+            const newTotal = prevTotal + rightCorrectAnswers;
+            localStorage.setItem("correctAnswersTotal", newTotal); // Save to local storage
+            return newTotal;
+        });
+        setScoreUpdated(true); // Mark the score as updated, preventing multiple updates at once
     }
-  }, [currentQuestionIndex, apiData.length, rightCorrectAnswers]);
+}, [currentQuestionIndex, apiData.length, rightCorrectAnswers, scoreUpdated]);
 
   // While loading or if there's an error
   if (loading) {
@@ -102,7 +129,7 @@ const GeneralKnowledge = () => {
     return (
       <div>
         <h1>Quiz Complete!</h1>
-        <p>          You answered {rightCorrectAnswers} out of {apiData.length} questions           correctly.        </p>
+        <p>You answered {rightCorrectAnswers} out of {apiData.length} questions correctly.</p>
         {rightCorrectAnswers >= 5 ? (
           <p>Well done! You answered over half correct. Keep it up!</p>
         ) : (
@@ -122,7 +149,8 @@ const GeneralKnowledge = () => {
           onClick={() => {
             setCurrentQuestionIndex(0); // Reset question index
             setRightCorrectAnswers(0); // Reset correct answers count
-            fetchTriviaData();
+            setScoreUpdated(false); // Reset the score updated flag
+            fetchTriviaData(); // Fetch new trivia data
           }}
         >
           Restart Quiz
