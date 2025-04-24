@@ -3,12 +3,13 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navigation from './components/Navigation';
 import HomePage from './components/HomePage';
-import CustomQuiz from './components/CustomQuiz';
 import PlayerStats from './components/PlayerStats';
 import GeneralKnowledge from './components/GeneralKnowledge';
 import CreateProfile from './components/CreateProfile';
 import Settings from './components/Settings';
 import LoginPage from './components/LoginPage';
+import PickQuiz from './components/PickQuiz';
+import PictureQuiz from './components/PictureQuiz';
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
           <Route path = "/" element = {<HomePage />} />
           <Route path = "/generalknowledge" element = {<GeneralKnowledge />} />
           <Route path = "/playerstats" element = {<PlayerStats />} />
-          <Route path = "/customquiz" element = {<CustomQuiz />} />
+          <Route path = "/pickquiz" element = {<PickQuiz />} />
+          <Route path = "/picturequiz" element = {<PictureQuiz />} />
           <Route path = "/createprofile" element = {<CreateProfile />} />
           <Route path = "/login" element = {<LoginPage />} />
           <Route path = "/settings" element = {<Settings />} />
