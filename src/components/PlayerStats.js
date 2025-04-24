@@ -34,10 +34,10 @@ const PlayerStats = () => {
             <h1>Player Leaderboard</h1>
             <h4></h4>
             {profiles.length > 0 ? (
-                profiles.map((profile, index) => (
+                profiles.map((profile, place) => (
                     <PlayerStatsItem
                         myprofiles={profile} // Pass each profile to PlayerStatsItem
-                        rank={index + 1} // Keeps track of place in leaderboard
+                        rank={place + 1} // Keeps track of place in leaderboard
                         key={profile._id}
                     />
                 ))
