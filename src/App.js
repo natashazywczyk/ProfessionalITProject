@@ -10,6 +10,7 @@ import Settings from './components/Settings';
 import LoginPage from './components/LoginPage';
 import PickQuiz from './components/PickQuiz';
 import HistoryQuiz from './components/HistoryQuiz';
+import MusicQuiz from './components/MusicQuiz';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path = "/playerstats" element = {<PlayerStats />} />
           <Route path = "/pickquiz" element = {<PickQuiz />} />
           <Route path = "/historyquiz" element = {<HistoryQuiz />} />
+          <Route path = "/musicquiz" element = {<MusicQuiz />} />
           <Route path = "/createprofile" element = {<CreateProfile />} />
           <Route path = "/login" element = {<LoginPage />} />
           <Route path = "/settings" element = {<Settings />} />
