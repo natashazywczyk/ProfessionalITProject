@@ -12,10 +12,9 @@ const Navigation = () =>
                 <Navbar.Brand href="/">Trivia Quiz</Navbar.Brand>
                 <Nav className="me-auto">
                     {/*Different links*/}
-                    <Nav.Link href="/generalknowledge">Quizzes</Nav.Link>
-                    <Nav.Link href="/playerstats">Player Statstics</Nav.Link>
-                    <Nav.Link href="/customquiz">Add Quiz Deck</Nav.Link>
                     <Nav.Link href="/createprofile">Create Profile</Nav.Link>
+                    <Nav.Link href="/pickquiz">Pick a Quiz</Nav.Link>
+                    <Nav.Link href="/playerstats">Player Statstics</Nav.Link>
                 </Nav>
                 <Nav className="ms-auto">
                     <Nav.Link href="/settings">Settings</Nav.Link>
