@@ -14,11 +14,10 @@ const PickQuiz = () => {
                     style={{
                         padding: "15px 30px",
                         margin: "10px",
-                        backgroundColor: "purple",
+                        backgroundColor: "#87bdf8",
                         color: "white",
                         border: "none",
                         borderRadius: "5px",
-                        cursor: "pointer",
                         fontSize: "16px",
                     }}
                     onClick={() => navigate("/generalknowledge")}
@@ -31,11 +30,10 @@ const PickQuiz = () => {
                     style={{
                         padding: "15px 30px",
                         margin: "10px",
-                        backgroundColor: "purple",
+                        backgroundColor: "#9587f8",
                         color: "white",
                         border: "none",
                         borderRadius: "5px",
-                        cursor: "pointer",
                         fontSize: "16px",
                     }}
                     onClick={() => navigate("/historyquiz")}
@@ -43,16 +41,15 @@ const PickQuiz = () => {
                     History
                 </button>
 
-                {/* Click to get music quiz*/}
+                {/* Click to get music quiz */}
                 <button
                     style={{
                         padding: "15px 30px",
                         margin: "10px",
-                        backgroundColor: "purple",
+                        backgroundColor: "#d987f8",
                         color: "white",
                         border: "none",
                         borderRadius: "5px",
-                        cursor: "pointer",
                         fontSize: "16px",
                     }}
                     onClick={() => navigate("/musicquiz")}
