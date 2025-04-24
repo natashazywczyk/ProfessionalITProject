@@ -9,9 +9,9 @@ const PlayerStatsItem = (props) => {
   return (
     <div  className="container w-50 mt-6"
       style={{
-          display: "flex", // Use flexbox for alignment
-          alignItems: "center", // Vertically align items
-          marginBottom: "20px", // Add space between items
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "20px", 
       }}>
         {/* Shows the rank of the user to the left of the user card */}
       <div
