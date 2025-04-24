@@ -9,7 +9,7 @@ import CreateProfile from './components/CreateProfile';
 import Settings from './components/Settings';
 import LoginPage from './components/LoginPage';
 import PickQuiz from './components/PickQuiz';
-import PictureQuiz from './components/PictureQuiz';
+import HistoryQuiz from './components/HistoryQuiz';
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
           <Route path = "/generalknowledge" element = {<GeneralKnowledge />} />
           <Route path = "/playerstats" element = {<PlayerStats />} />
           <Route path = "/pickquiz" element = {<PickQuiz />} />
-          <Route path = "/picturequiz" element = {<PictureQuiz />} />
+          <Route path = "/historyquiz" element = {<HistoryQuiz />} />
           <Route path = "/createprofile" element = {<CreateProfile />} />
           <Route path = "/login" element = {<LoginPage />} />
           <Route path = "/settings" element = {<Settings />} />
