@@ -41,6 +41,7 @@ app.get('/api/profiles', async (req, res) => {
     try {
         const profiles = await profileModel.find({});
         console.log("Profiles found");
+        res.status(200).json({ profiles }); // Send profiles back to the frontend
     } 
     catch (error) {
         console.error("Error getting profiles:", error);
