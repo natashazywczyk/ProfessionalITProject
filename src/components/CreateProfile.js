@@ -61,6 +61,7 @@ const CreateProfile = () => {
     return (
         <div>
           <h2>Create Trivia Profile!</h2>
+          <h5>Enter in all fields below to create a profile to start saving your scores and compete against freinds!</h5>
           <br />
           <div className="container w-50 mt-6">
             <form onSubmit={handleSubmit}>
