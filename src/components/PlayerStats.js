@@ -32,7 +32,7 @@ const PlayerStats = () => {
     return (
         <div>
             <h1>Player Leaderboard</h1>
-            <h4></h4>
+            <h4>See how you compete against other players below!</h4>
             {profiles.length > 0 ? (
                 profiles.map((profile, place) => (
                     <PlayerStatsItem
